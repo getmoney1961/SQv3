@@ -82,32 +82,63 @@ document.addEventListener('DOMContentLoaded', function() {
         }, (duration + delay) * 1000);
     }
     
-    // Listen for new entries from Firebase (real-time)
-    // Only show bubbles for entries added AFTER the page loads
-    const startListeningTime = Date.now();
-    console.log('Page loaded at:', startListeningTime);
+    // Track if user has submitted anything
+    let userHasSubmitted = false;
+    let firebaseListener = null;
     
-    entriesRef.on('child_added', function(snapshot) {
-        const entry = snapshot.val();
-        console.log('Firebase entry detected:', entry);
+    // Function to load all entries and start listening
+    function startShowingBubbles() {
+        if (firebaseListener) return; // Already listening
         
-        // Only create bubbles for entries added after page load
-        if (entry && entry.text && entry.timestamp >= startListeningTime) {
-            console.log('Creating bubble for:', entry.text);
-            createBubble(entry.text);
-        } else {
-            console.log('Skipping old entry:', entry.text, 'timestamp:', entry.timestamp);
-        }
-    }, function(error) {
-        console.error('Firebase read error:', error);
-    });
+        console.log('Starting to show bubbles...');
+        
+        // Load all existing entries first
+        entriesRef.once('value', function(snapshot) {
+            const entries = [];
+            snapshot.forEach(function(childSnapshot) {
+                entries.push(childSnapshot.val());
+            });
+            
+            // Sort by timestamp (oldest first)
+            entries.sort((a, b) => a.timestamp - b.timestamp);
+            
+            // Create bubbles with staggered timing
+            entries.forEach((entry, index) => {
+                if (entry && entry.text) {
+                    setTimeout(() => {
+                        createBubble(entry.text);
+                    }, index * 500); // 500ms delay between each bubble
+                }
+            });
+        });
+        
+        // Now listen for new entries in real-time
+        const startListeningTime = Date.now();
+        firebaseListener = entriesRef.on('child_added', function(snapshot) {
+            const entry = snapshot.val();
+            
+            // Only show new entries added after we started listening
+            if (entry && entry.text && entry.timestamp >= startListeningTime) {
+                console.log('New real-time entry:', entry.text);
+                createBubble(entry.text);
+            }
+        }, function(error) {
+            console.error('Firebase read error:', error);
+        });
+    }
     
     // Handle submit button click
     submitButton.addEventListener('click', function(e) {
         e.preventDefault();
         const value = heroInput.value.trim();
         if (value) {
-            // Save the entry to Firebase (bubble will be created by the listener)
+            // If this is the user's first submission, load all entries and start listening
+            if (!userHasSubmitted) {
+                userHasSubmitted = true;
+                startShowingBubbles();
+            }
+            
+            // Save the entry to Firebase
             saveEntry(value);
             
             // Clear the input
