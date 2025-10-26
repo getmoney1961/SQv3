@@ -5,7 +5,7 @@
 const firebaseConfig = {
   apiKey: "AIzaSyBIlYBHeEHxOhRrv2_KyKONwL2wTFYeKls",
   authDomain: "success-quotes-website.firebaseapp.com",
-  databaseURL: "https://success-quotes-website-default-rtdb.firebaseio.com",
+  databaseURL: "https://success-quotes-website-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "success-quotes-website",
   storageBucket: "success-quotes-website.firebasestorage.app",
   messagingSenderId: "926053392655",

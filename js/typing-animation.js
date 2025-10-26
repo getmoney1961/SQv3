@@ -83,24 +83,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Listen for new entries from Firebase (real-time)
-    // Only listen for entries added after the page loads
-    let isInitialLoad = true;
+    // Only show bubbles for entries added AFTER the page loads
+    const startListeningTime = Date.now();
+    console.log('Page loaded at:', startListeningTime);
     
-    entriesRef.limitToLast(50).on('child_added', function(snapshot) {
-        // Skip the initial data load to avoid showing old entries as bubbles
-        if (isInitialLoad) {
-            // Give a small delay to mark initial load complete
-            setTimeout(() => {
-                isInitialLoad = false;
-            }, 1000);
-            return;
-        }
-        
+    entriesRef.on('child_added', function(snapshot) {
         const entry = snapshot.val();
-        if (entry && entry.text) {
-            // Create a bubble for the new entry
+        console.log('Firebase entry detected:', entry);
+        
+        // Only create bubbles for entries added after page load
+        if (entry && entry.text && entry.timestamp >= startListeningTime) {
+            console.log('Creating bubble for:', entry.text);
             createBubble(entry.text);
+        } else {
+            console.log('Skipping old entry:', entry.text, 'timestamp:', entry.timestamp);
         }
+    }, function(error) {
+        console.error('Firebase read error:', error);
     });
     
     // Handle submit button click
@@ -108,11 +107,8 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         const value = heroInput.value.trim();
         if (value) {
-            // Save the entry to Firebase
+            // Save the entry to Firebase (bubble will be created by the listener)
             saveEntry(value);
-            
-            // Create a bubble with the new entry immediately for the user
-            createBubble(value);
             
             // Clear the input
             heroInput.value = '';
