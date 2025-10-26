@@ -39,6 +39,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 300); // Wait for transition
     });
     
+    // Handle touch/tap for mobile devices
+    let isTouchDevice = false;
+    
+    // Detect if device supports touch
+    heroContent.addEventListener('touchstart', function(e) {
+        isTouchDevice = true;
+        
+        // Toggle the active class for mobile
+        if (!heroContent.classList.contains('active')) {
+            heroContent.classList.add('active');
+            setTimeout(() => {
+                heroInput.focus();
+            }, 300);
+        }
+    }, { passive: true });
+    
+    // Close input when clicking outside on mobile
+    document.addEventListener('touchstart', function(e) {
+        if (isTouchDevice && heroContent.classList.contains('active')) {
+            // Check if the touch is outside the hero-content
+            if (!heroContent.contains(e.target)) {
+                heroContent.classList.remove('active');
+                heroInput.blur();
+            }
+        }
+    }, { passive: true });
+    
     // Save entry to Firebase
     function saveEntry(text) {
         const newEntryRef = entriesRef.push();

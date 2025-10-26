@@ -25,10 +25,29 @@
 		<div class="downloadButtonContainer">
 			<!-- <div class="downloadButtonText">Download</div> -->
 					<a href="#" class="downloadButtonText">Download</a>
-	</div>
-
 		</div>
+		
+		<!-- Hamburger Menu Button (mobile only) -->
+		<button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle menu">
+			<span class="hamburger-line"></span>
+			<span class="hamburger-line"></span>
+			<span class="hamburger-line"></span>
+		</button>
 	</header>
+	
+	<!-- Mobile Navigation Overlay -->
+	<div class="mobile-nav-overlay" id="mobileNavOverlay">
+		<button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
+			<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M18 6L6 18M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg>
+		</button>
+		<div class="mobile-nav-content">
+			<a href="#feature1" class="mobile-nav-link">The App</a>
+			<a href="mailto:hello@successquotes.co" class="mobile-nav-link">Contact Us</a>
+			<a href="#" class="mobile-nav-download">Download</a>
+		</div>
+	</div>
 
 	<!-- Hero Section with Typing Animation -->
 	<section class="hero">
@@ -113,6 +132,9 @@
 	
 	<!-- Main App Script -->
 	<script src="js/typing-animation.js"></script>
+	
+	<!-- Hamburger Menu Script -->
+	<script src="js/hamburger-menu.js"></script>
 	
 	<!-- Sticky Get App Button -->
 	<div class="sticky-app-button">
