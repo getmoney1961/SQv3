@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const heroInput = document.getElementById('heroInput');
     const submitButton = document.getElementById('submitButton');
     const bubblesContainer = document.getElementById('bubblesContainer');
-    const text = 'What does the word success mean to you?';
+    const text = 'What does success mean to you?';
     let index = 0;
     const typingSpeed = 100; // milliseconds per character
     

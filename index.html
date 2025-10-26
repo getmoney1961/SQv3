@@ -10,6 +10,26 @@
 	<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+	<header>
+			<div class="headerTitle">Success Quotes</div>
+
+		<div class="headerLinksContainer">
+			<div class="headerLinks">
+				<div class="headerLinkApp"><a href="#feature1">The App</a></div>
+<!-- 				<div class="headerLinkBook"><a href="#feature1">The Book</a></div>
+				<div class="headerLinkCareers"><a href="#feature1">Careers</a></div> -->
+				<div class="headerLinkContact"><a href="mailto:hello@successquotes.co">Contact Us</a></div>
+			</div>
+		</div>
+
+		<div class="downloadButtonContainer">
+			<!-- <div class="downloadButtonText">Download</div> -->
+					<a href="#" class="downloadButtonText">Download</a>
+	</div>
+
+		</div>
+	</header>
+
 	<!-- Hero Section with Typing Animation -->
 	<section class="hero">
 		<!-- Floating Bubbles Container -->
@@ -28,27 +48,42 @@
 		</div>
 	</section>
 	
-	<header>
-		<h1>Success Quotes</h1>
-		<div class="nav-links">
-			<a href="privacy.html">Privacy Policy</a>
-		</div>
-	</header>
 	
+		<!-- Features Section -->
+	<section class="features" id="feature1">
+		<div class="featureTitle"><span style="color: white; font-family: Instrument Serif; font-style: italic; word-wrap: break-word">The largest library</span><span> on success </span><span>in your pocket</span></div>
+				<div class="featureCaption">Thousands of hand curated quotes from the world's most successful people</div>
+		<div><img src="Feature1.png" alt="Feature 1"></div>
+	</section>
+
+	<section class="features" id="feature2">
+		<div class="featureTitle"><span style="color: white; font-family: Instrument Serif Italic; font-style: italic; word-wrap: break-word">More </span><span>than</span>
+			<span style="color: white; font-family: Instrument Serif Italic; font-style: italic; word-wrap: break-word">just quotes</span>
+		</div>
+		<div class="featureCaption">Dig deeper into quote meanings with our state of the art context tool</div>
+		<div><img src="Feature2.png" alt="Feature 2"></div>
+	</section>
+
 	<main>
 		<div class="about-section">
-			<h2>About</h2>
-			
-			<p>Success feels like a mystery, like this elusive, mystical thing only a few people understand and can achieve. The truth is, that is not the case; it's built on a few guiding principles that, when practiced daily, can help us achieve the life we want.</p>
-			
-			<p>It starts first with understanding what success means to us — and adopting the mental frameworks needed to make the mental shift.</p>
-			
-			<h3>What we are not:</h3>
+			<div class="aboutTitle" id="about">About
+				<div class="aboutText">
+				<p>Success feels like a mystery, like this elusive, mystical thing only a few people understand and can achieve. The truth is, that is not the case; it's built on a few guiding principles that, when practiced daily, can help us achieve the life we want.</p>
+				
+				<p>It starts first with understanding what success means to us — and adopting the mental frameworks needed to make the mental shift.</p>
+				</div>
+				</div>
+
+			<div class="aboutTitle" id="mission">What we are not:
+			<div class="aboutText">
 			<p>We're not here to sell you dreams, shortcuts, or empty motivation. Just something that can help make a 1% shift each day by being reminded of the guiding principles of success. <span class="highlight">One. quote. a. day.</span></p>
 			
 			<p>Our goal isn't to promise a successful life overnight, but to help you live one successful day at a time.</p>
-			
-			<h3>Solution & Vision:</h3>
+			</div>
+			</div>
+
+			<div class="aboutTitle" id="vision">Solution & Vision:
+			<div class="aboutText">
 			<p>So we created an app; because we believe technology can spread wisdom faster than ever before.</p>
 			
 			<p>We aim to make success principles accessible to all.</p>
@@ -56,6 +91,8 @@
 			<p>Imagine a world where success isn't gate-kept, where anyone can access the mindset and tools to thrive.</p>
 			
 			<p>If we can help 80 million people — just 1% of the world live a little better, think a little clearer, and believe in themselves a little more… think what a beautiful world that'll be.</p>
+			</div>
+		</div>
 		</div>
 	</main>
 	
@@ -64,6 +101,7 @@
 		<div class="privacy">
 			<a href="privacy.html" target="_blank">Privacy Policy</a>
 		</div>
+		<p>hello@successquotes.co</p>
 	</footer>
 	
 	<!-- Firebase SDK -->
@@ -75,5 +113,10 @@
 	
 	<!-- Main App Script -->
 	<script src="js/typing-animation.js"></script>
+	
+	<!-- Sticky Get App Button -->
+	<div class="sticky-app-button">
+		<a href="#" class="get-app-button">Get the app now</a>
+	</div>
 </body>
 </html>
