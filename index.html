@@ -3,50 +3,77 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Success Quotes</title>
-	<style>
-		html, body {
-			height: 100%;
-			margin: 0;
-			padding: 0;
-		}
-
-		body {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			text-align: center;
-			font-family: Arial, sans-serif;
-			background-color: #f9f9f9;
-		}
-
-		main {
-			flex: 1;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			width: 100%;
-		}
-
-		footer {
-			text-align: center;
-			padding: 20px;
-			background-color: #eee;
-			width: 100%;
-			position: relative;
-			bottom: 0;
-		}
-	</style>
+	<title>Success Quotes - About</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+	<!-- Hero Section with Typing Animation -->
+	<section class="hero">
+		<!-- Floating Bubbles Container -->
+		<div class="bubbles-container" id="bubblesContainer"></div>
+		
+		<div class="hero-content">
+			<h1 class="typing-text" id="typingText"></h1>
+			<div class="input-container" id="inputContainer">
+				<textarea class="hero-input" placeholder="Type something..." id="heroInput" maxlength="200" rows="1"></textarea>
+				<button class="submit-button" id="submitButton" aria-label="Submit">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+				</button>
+			</div>
+		</div>
+	</section>
+	
+	<header>
+		<h1>Success Quotes</h1>
+		<div class="nav-links">
+			<a href="privacy.html">Privacy Policy</a>
+		</div>
+	</header>
+	
 	<main>
-		<p>Website Coming Soon</p>
+		<div class="about-section">
+			<h2>About</h2>
+			
+			<p>Success feels like a mystery, like this elusive, mystical thing only a few people understand and can achieve. The truth is, that is not the case; it's built on a few guiding principles that, when practiced daily, can help us achieve the life we want.</p>
+			
+			<p>It starts first with understanding what success means to us — and adopting the mental frameworks needed to make the mental shift.</p>
+			
+			<h3>What we are not:</h3>
+			<p>We're not here to sell you dreams, shortcuts, or empty motivation. Just something that can help make a 1% shift each day by being reminded of the guiding principles of success. <span class="highlight">One. quote. a. day.</span></p>
+			
+			<p>Our goal isn't to promise a successful life overnight, but to help you live one successful day at a time.</p>
+			
+			<h3>Solution & Vision:</h3>
+			<p>So we created an app; because we believe technology can spread wisdom faster than ever before.</p>
+			
+			<p>We aim to make success principles accessible to all.</p>
+			
+			<p>Imagine a world where success isn't gate-kept, where anyone can access the mindset and tools to thrive.</p>
+			
+			<p>If we can help 80 million people — just 1% of the world live a little better, think a little clearer, and believe in themselves a little more… think what a beautiful world that'll be.</p>
+		</div>
 	</main>
+	
 	<footer>
 		<p>Success Quotes is a product of GenInspire</p>
-				<div class="privacy"><a href="privacy.html" target="_blank" class="text-wrapper-2">Privacy Policy</a></div>
-		<!-- <a href="">Privacy Policy</a> -->
+		<div class="privacy">
+			<a href="privacy.html" target="_blank">Privacy Policy</a>
+		</div>
 	</footer>
+	
+	<!-- Firebase SDK -->
+	<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+	
+	<!-- Firebase Configuration -->
+	<script src="js/firebase-config.js"></script>
+	
+	<!-- Main App Script -->
+	<script src="js/typing-animation.js"></script>
 </body>
 </html>
