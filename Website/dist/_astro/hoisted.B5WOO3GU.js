@@ -1,0 +1,1 @@
+import"./hoisted.BI9sxElo.js";function n(){const t=document.getElementById("searchInput").value.toLowerCase().trim();t.length<2||(window.location.href=`/search?q=${encodeURIComponent(t)}`)}document.getElementById("searchInput")?.addEventListener("keypress",e=>{e.key==="Enter"&&n()});
