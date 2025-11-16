@@ -1,0 +1,24 @@
+# Xcode
+*.xcuserstate
+*.xcuserdatad/
+
+# API Keys and Sensitive Configuration
+APIConfig.swift
+Website/js/firebase-config.js
+
+# Build artifacts
+build/
+DerivedData/
+
+# CocoaPods
+Pods/
+
+# Swift Package Manager
+.swiftpm/
+Package.resolved
+
+# macOS
+.DS_Store
+
+
+
