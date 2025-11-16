@@ -1,0 +1,13 @@
+# Success Quotes - Robots.txt
+# Allow all search engines to index all pages
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.successquotes.co/sitemap-index.xml
+
+# Crawl-delay (optional, be nice to servers)
+Crawl-delay: 1
+
+

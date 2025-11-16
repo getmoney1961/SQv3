@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { authors, quotesByAuthor } from '../../scripts/data-loader.js';
+import { generateAuthorSlug } from '../../scripts/utils.js';
+
+// Generate paths for all authors
+export async function getStaticPaths() {
+  return authors.map(author => {
+    const authorSlug = generateAuthorSlug(author);
+    return {
+      params: { author: authorSlug },
+      props: { 
+        author,
+        quotes: quotesByAuthor[author]
+      }
+    };
+  });
+}
+
+const { author, quotes } = Astro.props;
+const quoteCount = quotes.length;
+
+// SEO
+const title = `${quoteCount} Inspirational Quotes by ${author} | Success Quotes`;
+const description = `Discover ${quoteCount} powerful success and motivational quotes by ${author}. Read, share, and get inspired by ${author}'s wisdom on success, leadership, and life.`;
+
+// Schema.org structured data
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": author,
+  "description": `Author of ${quoteCount} inspirational quotes`,
+  "url": `https://www.successquotes.co/author/${generateAuthorSlug(author)}`,
+  "sameAs": [],
+  "knowsAbout": [...new Set(quotes.map(q => q.topic).filter(Boolean))]
+};
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  schemaData={schemaData}
+>
+  <div class="quote-container">
+    <!-- Author Header -->
+    <div style="text-align: center; margin-bottom: 50px;">
+      <h1 style="font-size: 3em; color: white; margin-bottom: 15px; font-family: 'Instrument Serif', serif;">
+        {author}
+      </h1>
+      <p style="font-size: 1.2em; color: #888;">
+        {quoteCount} {quoteCount === 1 ? 'Quote' : 'Quotes'}
+      </p>
+    </div>
+    
+    <!-- Topics by this author -->
+    {(() => {
+      const topics = [...new Set(quotes.map(q => q.topic).filter(Boolean))];
+      return topics.length > 0 && (
+        <div style="margin-bottom: 40px; text-align: center;">
+          <p style="color: #888; margin-bottom: 15px;">Topics:</p>
+          <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            {topics.map(topic => {
+              const topicSlug = quotes.find(q => q.topic === topic)?.topicSlug;
+              return (
+                <a href={`/topic/${topicSlug}`} class="quote-tag">
+                  {topic}
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      );
+    })()}
+    
+    <!-- Quotes Grid -->
+    <div style="display: grid; gap: 30px; margin-top: 40px;">
+      {quotes.map(quote => (
+        <article 
+          style="padding: 30px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; transition: all 0.3s; border: 1px solid transparent;"
+          onmouseover="this.style.background='rgba(255, 255, 255, 0.08)'; this.style.borderColor='rgba(255, 255, 255, 0.1)';"
+          onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.borderColor='transparent';"
+        >
+          <a 
+            href={`/quote/${quote.authorSlug}/${quote.slug}`}
+            style="text-decoration: none;"
+          >
+            <blockquote style="color: white; font-size: 1.3em; line-height: 1.6; font-family: 'Instrument Serif', serif; font-style: italic; margin-bottom: 20px;">
+              "{quote.quote}"
+            </blockquote>
+            
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px;">
+              {quote.topic && (
+                <span class="quote-tag" style="font-size: 0.85em;">
+                  {quote.topic}
+                </span>
+              )}
+              {quote.category && (
+                <span class="quote-tag" style="font-size: 0.85em;">
+                  {quote.category}
+                </span>
+              )}
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+    
+    <!-- Navigation -->
+    <div class="quote-actions" style="margin-top: 60px;">
+      <a href="/quotes" class="btn btn-secondary">Browse All Quotes</a>
+      <a href="/random" class="btn btn-primary">Get Random Quote</a>
+    </div>
+    
+    <!-- CTA -->
+    <div style="text-align: center; margin-top: 60px; padding: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px;">
+      <h3 style="font-size: 1.8em; color: white; margin-bottom: 15px;">
+        Love {author}'s quotes?
+      </h3>
+      <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 25px;">
+        Get daily inspiration from {author} and thousands of other successful people
+      </p>
+      <a 
+        href="https://apps.apple.com/gb/app/success-quotes/id6752120038?itscg=30200&itsct=apps_box_link&mttnsubad=6752120038"
+        class="btn btn-primary"
+        style="background: white; color: #667eea;"
+      >
+        Download Success Quotes App
+      </a>
+    </div>
+  </div>
+</BaseLayout>
+
+

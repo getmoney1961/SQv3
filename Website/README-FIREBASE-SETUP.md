@@ -46,3 +46,4 @@ Since your API key was exposed, you must:
    - Configure proper security rules in Firebase Console
    - This is your main line of defense for Firebase services
 
+
