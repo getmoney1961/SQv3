@@ -5,6 +5,8 @@
 # API Keys and Sensitive Configuration
 APIConfig.swift
 Website/js/firebase-config.js
+SuccessQuotes/Shared/firebase-key.json
+**/firebase-key.json
 
 # Build artifacts
 build/
