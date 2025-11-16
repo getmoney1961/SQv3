@@ -10,3 +10,4 @@ Sitemap: https://www.successquotes.co/sitemap-index.xml
 # Crawl-delay (optional, be nice to servers)
 Crawl-delay: 1
 
+
