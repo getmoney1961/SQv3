@@ -1,26 +1,22 @@
-# Xcode
-*.xcuserstate
-*.xcuserdatad/
+# Firebase configuration with sensitive keys
+js/firebase-config.js
 
-# API Keys and Sensitive Configuration
-APIConfig.swift
-Website/js/firebase-config.js
-SuccessQuotes/Shared/firebase-key.json
-**/firebase-key.json
+# Node modules (if you use npm)
+node_modules/
 
-# Build artifacts
-build/
-DerivedData/
+# Environment variables
+.env
+.env.local
 
-# CocoaPods
-Pods/
-
-# Swift Package Manager
-.swiftpm/
-Package.resolved
-
-# macOS
+# OS files
 .DS_Store
+Thumbs.db
 
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
 
