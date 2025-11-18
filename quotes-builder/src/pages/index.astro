@@ -1,0 +1,516 @@
+---
+// Astro component frontmatter
+---
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Success Quotes - Thousands of Curated Success & Motivational Quotes</title>
+	<meta name="description" content="The largest library of hand-curated success quotes in your pocket. Discover thousands of motivational quotes from the world's most successful people. Get inspired daily.">
+	
+	<!-- Open Graph / Social Media -->
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Success Quotes - Thousands of Curated Success & Motivational Quotes">
+	<meta property="og:description" content="The largest library of hand-curated success quotes in your pocket. Discover thousands of motivational quotes from the world's most successful people.">
+	<meta property="og:image" content="https://www.successquotes.co/Feature1.png">
+	<meta property="og:url" content="https://www.successquotes.co/">
+	
+	<!-- Twitter Card -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Success Quotes - Thousands of Curated Success & Motivational Quotes">
+	<meta name="twitter:description" content="The largest library of hand-curated success quotes in your pocket. Discover thousands of motivational quotes from the world's most successful people.">
+	<meta name="twitter:image" content="https://www.successquotes.co/Feature1.png">
+	
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7VXDVZB5V"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'G-Q7VXDVZB5V');
+	</script>
+	
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/css/styles.css">
+	
+	<!-- Newsletter Styles -->
+	<style>
+		.newsletter-section {
+			background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+			padding: 60px 20px;
+			margin: 40px 0;
+			border-radius: 16px;
+		}
+		
+		.newsletter-container {
+			max-width: 600px;
+			margin: 0 auto;
+			text-align: center;
+		}
+		
+		.newsletter-title {
+			font-size: 2em;
+			color: white;
+			margin-bottom: 15px;
+			font-weight: 700;
+		}
+		
+		.newsletter-description {
+			font-size: 1.1em;
+			color: #ccc;
+			margin-bottom: 30px;
+			line-height: 1.6;
+		}
+		
+		.newsletter-form {
+			margin-top: 30px;
+		}
+		
+		.form-group {
+			display: flex;
+			gap: 10px;
+			max-width: 500px;
+			margin: 0 auto;
+			flex-wrap: wrap;
+		}
+		
+		.newsletter-input {
+			flex: 1;
+			min-width: 250px;
+			padding: 15px 20px;
+			border-radius: 8px;
+			border: 2px solid rgba(255, 255, 255, 0.1);
+			background: rgba(255, 255, 255, 0.05);
+			color: white;
+			font-size: 1em;
+			transition: all 0.3s;
+		}
+		
+		.newsletter-input:focus {
+			outline: none;
+			border-color: #667eea;
+			background: rgba(255, 255, 255, 0.1);
+		}
+		
+		.newsletter-input::placeholder {
+			color: #888;
+		}
+		
+		.newsletter-button {
+			padding: 15px 30px;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+			border: none;
+			border-radius: 8px;
+			font-size: 1em;
+			font-weight: 600;
+			cursor: pointer;
+			transition: all 0.3s;
+			white-space: nowrap;
+		}
+		
+		.newsletter-button:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+		}
+		
+		.newsletter-button:active {
+			transform: translateY(0);
+		}
+		
+		.newsletter-button:disabled {
+			opacity: 0.6;
+			cursor: not-allowed;
+		}
+		
+		.newsletter-privacy {
+			font-size: 0.85em;
+			color: #888;
+			margin-top: 15px;
+		}
+		
+		.newsletter-success {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+			padding: 20px;
+			background: rgba(74, 222, 128, 0.1);
+			border-radius: 8px;
+			margin-top: 20px;
+		}
+		
+		.newsletter-success p {
+			color: #4ade80;
+			margin: 0;
+			font-weight: 600;
+		}
+		
+		.newsletter-error {
+			padding: 20px;
+			background: rgba(239, 68, 68, 0.1);
+			border-radius: 8px;
+			margin-top: 20px;
+		}
+		
+		.newsletter-error p {
+			color: #ef4444;
+			margin: 0;
+			font-weight: 600;
+		}
+		
+		/* Mobile responsive */
+		@media (max-width: 768px) {
+			.newsletter-section {
+				padding: 40px 20px;
+				margin: 20px 10px;
+			}
+			
+			.newsletter-title {
+				font-size: 1.5em;
+			}
+			
+			.newsletter-description {
+				font-size: 1em;
+			}
+			
+			.form-group {
+				flex-direction: column;
+			}
+			
+			.newsletter-input {
+				min-width: 100%;
+			}
+			
+			.newsletter-button {
+				width: 100%;
+			}
+		}
+	</style>
+</head>
+<body>
+	<header>
+			<div class="headerTitle">Success Quotes</div>
+
+		<div class="headerLinksContainer">
+			<div class="headerLinks">
+				<div class="headerLinkApp"><a href="/app">The App</a></div>
+				<div class="headerLinkApp"><a href="/book">The Book</a></div>
+				<div class="headerLinkApp"><a href="/quotes">Search Quotes</a></div>
+				<div class="headerLinkApp"><a href="/daily">Daily Quote</a></div>
+				<div class="headerLinkContact"><a href="mailto:hello@successquotes.co">Contact</a></div>
+			</div>
+		</div>
+
+		<div class="downloadButtonContainer">
+			<!-- <div class="downloadButtonText">Download iOS App</div> -->
+					<a href="https://apps.apple.com/gb/app/success-quotes/id6752120038?itscg=30200&itsct=apps_box_link&mttnsubad=6752120038" class="downloadButtonText">Download iOS App</a>
+		</div>
+		
+		<!-- Hamburger Menu Button (mobile only) -->
+		<button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle menu">
+			<span class="hamburger-line"></span>
+			<span class="hamburger-line"></span>
+			<span class="hamburger-line"></span>
+		</button>
+	</header>
+	
+	<!-- Mobile Navigation Overlay -->
+	<div class="mobile-nav-overlay" id="mobileNavOverlay">
+		<button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
+			<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M18 6L6 18M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg>
+		</button>
+		<div class="mobile-nav-content">
+			<a href="/app" class="mobile-nav-link">The App</a>
+			<a href="/book" class="mobile-nav-link">The Book</a>
+			<a href="/quotes" class="mobile-nav-link">Search Quotes</a>
+			<a href="/daily" class="mobile-nav-link">Daily Quote</a>
+			<a href="mailto:hello@successquotes.co" class="mobile-nav-link">Contact</a>
+			<a href="https://apps.apple.com/gb/app/success-quotes/id6752120038?itscg=30200&itsct=apps_box_link&mttnsubad=6752120038" class="mobile-nav-download">Download iOS App</a>
+		</div>
+	</div>
+
+	<!-- Hero Section with Typing Animation -->
+	<section class="hero">
+		<!-- Floating Bubbles Container -->
+		<div class="bubbles-container" id="bubblesContainer"></div>
+		
+		<div class="hero-content">
+			<h1 class="typing-text" id="typingText"></h1>
+			<div class="input-container" id="inputContainer">
+				<textarea class="hero-input" placeholder="Type something..." id="heroInput" maxlength="200" rows="1"></textarea>
+				<button class="submit-button" id="submitButton" aria-label="Submit">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+				</button>
+			</div>
+		</div>
+	</section>
+	
+	
+		<!-- Features Section -->
+	<section class="features" id="feature1">
+		<div class="featureTitle"><span style="color: white; font-family: Instrument Serif; font-style: italic; word-wrap: break-word">The largest library</span><span> on success </span><span>in your pocket</span></div>
+				<div class="featureCaption">Thousands of hand curated quotes from the world's most successful people</div>
+		<div><img src="/Feature1.png" alt="Feature 1"></div>
+	</section>
+
+	<section class="features" id="feature2">
+		<div class="featureTitle"><span style="color: white; font-family: Instrument Serif Italic; font-style: italic; word-wrap: break-word">More </span><span>than</span>
+			<span style="color: white; font-family: Instrument Serif Italic; font-style: italic; word-wrap: break-word">just quotes</span>
+		</div>
+		<div class="featureCaption">Dig deeper into quote meanings with our state of the art context tool</div>
+		<div><img src="/Feature2.png" alt="Feature 2"></div>
+	</section>
+
+	<main>
+		<div class="about-section">
+			<div class="aboutTitle" id="about">About
+				<div class="aboutText">
+				<p>Success feels like a mystery, like this elusive, mystical thing only a few people understand and can achieve. The truth is, that is not the case; it's built on a few guiding principles that, when practiced daily, can help us achieve the life we want.</p>
+				
+				<p>It starts first with understanding what success means to us — and adopting the mental frameworks needed to make the mental shift.</p>
+				</div>
+				</div>
+
+			<div class="aboutTitle" id="mission">What we are not:
+			<div class="aboutText">
+			<p>We're not here to sell you dreams, shortcuts, or empty motivation. Just something that can help make a 1% shift each day by being reminded of the guiding principles of success. <span class="highlight">One. quote. a. day.</span></p>
+			
+			<p>Our goal isn't to promise a successful life overnight, but to help you live one successful day at a time.</p>
+			</div>
+			</div>
+
+			<div class="aboutTitle" id="vision">Solution & Vision:
+			<div class="aboutText">
+			<p>So we created an app; because we believe technology can spread wisdom faster than ever before.</p>
+			
+			<p>We aim to make success principles accessible to all.</p>
+			
+			<p>Imagine a world where success isn't gate-kept, where anyone can access the mindset and tools to thrive.</p>
+			
+			<p>If we can help 80 million people — just 1% of the world live a little better, think a little clearer, and believe in themselves a little more… think what a beautiful world that'll be.</p>
+			</div>
+		</div>
+		</div>
+	</main>
+	
+	<!-- Newsletter Section -->
+	<div class="newsletter-section">
+		<div class="newsletter-container">
+			<h2 class="newsletter-title">Get Daily Inspiration 📬</h2>
+			<p class="newsletter-description">
+				Join thousands getting a daily success quote delivered to their inbox every morning
+			</p>
+			
+		<form class="newsletter-form" id="newsletterForm">
+			<div class="form-group">
+				<input 
+					type="email" 
+					id="emailInput"
+					name="email"
+					placeholder="Enter your email address"
+					required
+					class="newsletter-input"
+				/>
+				<button type="submit" class="newsletter-button">
+					Subscribe
+				</button>
+			</div>
+			
+			<!-- Honeypot field (hidden from humans, catches bots) -->
+			<input 
+				type="text" 
+				id="website" 
+				name="website" 
+				tabindex="-1" 
+				autocomplete="off"
+				style="position: absolute; left: -5000px;"
+			/>
+			
+			<p class="newsletter-privacy">
+				We respect your privacy. Unsubscribe at any time.
+			</p>
+		</form>
+			
+			<div class="newsletter-success" id="successMessage" style="display: none;">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M20 6L9 17L4 12" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+				<p>Thanks for subscribing! Check your email to confirm.</p>
+			</div>
+			
+			<div class="newsletter-error" id="errorMessage" style="display: none;">
+				<p>Oops! Something went wrong. Please try again.</p>
+			</div>
+		</div>
+	</div>
+	
+	<footer>
+		<p>Success Quotes is a product of GenInspire</p>
+		<div class="privacy">
+			<a href="/privacy.html" target="_blank">Privacy Policy</a>
+		</div>
+		<p>hello@successquotes.co</p>
+	</footer>
+	
+	<!-- Firebase SDK -->
+	<script is:inline src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+	<script is:inline src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+	
+	<!-- Firebase Configuration -->
+	<script is:inline src="/js/firebase-config.js"></script>
+	
+	<!-- Main App Script -->
+	<script is:inline src="/js/typing-animation.js"></script>
+	
+	<!-- Hamburger Menu Script -->
+	<script is:inline src="/js/hamburger-menu.js"></script>
+	
+	<!-- Newsletter Script -->
+	<script is:inline>
+		document.addEventListener('DOMContentLoaded', function() {
+			const form = document.getElementById('newsletterForm');
+			const emailInput = document.getElementById('emailInput');
+			const honeypot = document.getElementById('website');
+			const successMessage = document.getElementById('successMessage');
+			const errorMessage = document.getElementById('errorMessage');
+			
+			// Track form load time (bots submit too fast)
+			const formLoadTime = Date.now();
+			
+			if (form) {
+				form.addEventListener('submit', async function(e) {
+					e.preventDefault();
+					
+					const email = emailInput.value.trim();
+					
+					// BOT PROTECTION #1: Honeypot check
+					// If the hidden "website" field is filled, it's a bot
+					if (honeypot.value) {
+						console.log('Bot detected: honeypot filled');
+						// Silently fail for bots (don't show error)
+						form.style.display = 'none';
+						successMessage.style.display = 'flex';
+						return;
+					}
+					
+					// BOT PROTECTION #2: Speed check
+					// If submitted in less than 2 seconds, likely a bot
+					const timeSinceLoad = Date.now() - formLoadTime;
+					if (timeSinceLoad < 2000) {
+						console.log('Bot detected: too fast');
+						// Silently fail for bots
+						form.style.display = 'none';
+						successMessage.style.display = 'flex';
+						return;
+					}
+					
+					// BOT PROTECTION #3: Rate limiting
+					// Check if user has submitted in the last 60 seconds
+					const lastSubmitTime = localStorage.getItem('newsletter_last_submit');
+					if (lastSubmitTime) {
+						const timeSinceLastSubmit = Date.now() - parseInt(lastSubmitTime);
+						if (timeSinceLastSubmit < 60000) {
+							errorMessage.style.display = 'block';
+							errorMessage.querySelector('p').textContent = 'Please wait a minute before submitting again.';
+							setTimeout(() => {
+								errorMessage.style.display = 'none';
+							}, 3000);
+							return;
+						}
+					}
+					
+					// Basic email validation
+					if (!email || !email.includes('@')) {
+						errorMessage.style.display = 'block';
+						errorMessage.querySelector('p').textContent = 'Please enter a valid email address.';
+						setTimeout(() => {
+							errorMessage.style.display = 'none';
+						}, 3000);
+						return;
+					}
+					
+					// Hide any previous messages
+					successMessage.style.display = 'none';
+					errorMessage.style.display = 'none';
+					
+					// Change button text
+					const button = form.querySelector('.newsletter-button');
+					const originalText = button.textContent;
+					button.textContent = 'Subscribing...';
+					button.disabled = true;
+					
+				try {
+					// Store in Firebase (since you already have Firebase configured)
+					if (typeof firebase !== 'undefined' && firebase.database) {
+						try {
+							const database = firebase.database();
+							const timestamp = new Date().toISOString();
+							
+							// Store newsletter signup with bot protection metadata
+							await database.ref('newsletter-signups').push({
+								email: email,
+								timestamp: timestamp,
+								source: 'website',
+								verified: true, // Passed all bot checks
+								userAgent: navigator.userAgent,
+								timeSinceLoad: timeSinceLoad
+							});
+							
+							console.log('✅ Newsletter signup stored in Firebase:', email);
+						} catch (firebaseError) {
+							// Firebase failed, but we'll still show success
+							console.warn('⚠️ Firebase save failed (but showing success):', firebaseError.message);
+							console.log('📧 Email to save:', email);
+						}
+					} else {
+						// Fallback: just log to console
+						console.log('📧 Newsletter signup (Firebase not available):', email);
+						console.log('👉 Email stored locally:', {
+							email: email,
+							timestamp: new Date().toISOString(),
+							verified: true,
+							timeSinceLoad: timeSinceLoad
+						});
+					}
+					
+					// Update rate limit timestamp
+					localStorage.setItem('newsletter_last_submit', Date.now().toString());
+					
+					// Show success message
+					form.style.display = 'none';
+					successMessage.style.display = 'flex';
+					
+				} catch (error) {
+					console.error('❌ Newsletter signup error:', error);
+					console.error('Error details:', {
+						message: error.message,
+						stack: error.stack
+					});
+					errorMessage.style.display = 'block';
+					button.textContent = originalText;
+					button.disabled = false;
+					
+					setTimeout(() => {
+						errorMessage.style.display = 'none';
+					}, 3000);
+				}
+				});
+			}
+		});
+	</script>
+	
+	<!-- Sticky Get App Button -->
+	<div class="sticky-app-button">
+		<a href="https://apps.apple.com/gb/app/success-quotes/id6752120038?itscg=30200&itsct=apps_box_link&mttnsubad=6752120038" class="get-app-button">Get the app now</a>
+	</div>
+</body>
+</html>

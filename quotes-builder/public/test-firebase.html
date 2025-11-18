@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥 Firebase Connection Diagnostic</h1>
+    
+    <div class="test-box">
+        <h2>Step 1: Check Firebase Loading</h2>
+        <div id="loadStatus" class="status info">Checking...</div>
+    </div>
+    
+    <div class="test-box">
+        <h2>Step 2: Check Firebase Configuration</h2>
+        <div id="configStatus" class="status info">Checking...</div>
+        <pre id="configDetails"></pre>
+    </div>
+    
+    <div class="test-box">
+        <h2>Step 3: Test Firebase Connection</h2>
+        <div id="connectionStatus" class="status info">Checking...</div>
+    </div>
+    
+    <div class="test-box">
+        <h2>Step 4: Test Write to Database</h2>
+        <input type="text" id="testInput" placeholder="Enter test message...">
+        <button onclick="testWrite()">Test Write to Firebase</button>
+        <div id="writeStatus" class="status info">Click button to test</div>
+        <div id="writeDetails"></div>
+    </div>
+    
+    <div class="test-box">
+        <h2>Step 5: Read from Database</h2>
+        <button onclick="testRead()">Test Read from Firebase</button>
+        <div id="readStatus" class="status info">Click button to test</div>
+        <pre id="readData"></pre>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="/js/firebase-config.js"></script>
+    
+    <script>
+        // Step 1: Check if Firebase is loaded
+        function checkFirebaseLoading() {
+            const loadStatus = document.getElementById('loadStatus');
+            if (typeof firebase !== 'undefined') {
+                loadStatus.className = 'status success';
+                loadStatus.textContent = '✅ Firebase SDK loaded successfully';
+                return true;
+            } else {
+                loadStatus.className = 'status error';
+                loadStatus.textContent = '❌ Firebase SDK not loaded';
+                return false;
+            }
+        }
+        
+        // Step 2: Check Firebase configuration
+        function checkFirebaseConfig() {
+            const configStatus = document.getElementById('configStatus');
+            const configDetails = document.getElementById('configDetails');
+            
+            try {
+                const app = firebase.app();
+                const options = app.options;
+                
+                configStatus.className = 'status success';
+                configStatus.textContent = '✅ Firebase initialized successfully';
+                
+                // Show config (hide sensitive data)
+                configDetails.textContent = JSON.stringify({
+                    projectId: options.projectId,
+                    authDomain: options.authDomain,
+                    databaseURL: options.databaseURL,
+                    storageBucket: options.storageBucket,
+                    apiKey: options.apiKey ? `${options.apiKey.substring(0, 10)}...` : 'Not set'
+                }, null, 2);
+                
+                return true;
+            } catch (error) {
+                configStatus.className = 'status error';
+                configStatus.textContent = '❌ Firebase initialization failed: ' + error.message;
+                configDetails.textContent = error.stack;
+                return false;
+            }
+        }
+        
+        // Step 3: Test Firebase connection
+        function checkConnection() {
+            const connectionStatus = document.getElementById('connectionStatus');
+            
+            try {
+                const db = firebase.database();
+                const connectedRef = db.ref('.info/connected');
+                
+                connectedRef.on('value', (snap) => {
+                    if (snap.val() === true) {
+                        connectionStatus.className = 'status success';
+                        connectionStatus.textContent = '✅ Connected to Firebase Realtime Database';
+                    } else {
+                        connectionStatus.className = 'status error';
+                        connectionStatus.textContent = '❌ Not connected to Firebase';
+                    }
+                });
+            } catch (error) {
+                connectionStatus.className = 'status error';
+                connectionStatus.textContent = '❌ Connection test failed: ' + error.message;
+            }
+        }
+        
+        // Step 4: Test write to database
+        async function testWrite() {
+            const writeStatus = document.getElementById('writeStatus');
+            const writeDetails = document.getElementById('writeDetails');
+            const testInput = document.getElementById('testInput');
+            const testMessage = testInput.value.trim() || 'Test message from diagnostic tool';
+            
+            writeStatus.className = 'status info';
+            writeStatus.textContent = '⏳ Writing to Firebase...';
+            writeDetails.innerHTML = '';
+            
+            try {
+                const db = firebase.database();
+                const entriesRef = db.ref('entries');
+                
+                console.log('Attempting to write:', testMessage);
+                
+                const newEntryRef = await entriesRef.push({
+                    text: testMessage,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP,
+                    source: 'diagnostic-test'
+                });
+                
+                writeStatus.className = 'status success';
+                writeStatus.textContent = '✅ Successfully wrote to Firebase!';
+                writeDetails.innerHTML = `<pre>Entry ID: ${newEntryRef.key}\nPath: entries/${newEntryRef.key}</pre>`;
+                
+                console.log('Write successful! Entry ID:', newEntryRef.key);
+                
+                // Auto-refresh the read test
+                setTimeout(testRead, 500);
+                
+            } catch (error) {
+                writeStatus.className = 'status error';
+                writeStatus.textContent = '❌ Write failed: ' + error.message;
+                writeDetails.innerHTML = `<pre>${error.stack}</pre>`;
+                
+                console.error('Write error:', error);
+                
+                // Provide helpful troubleshooting
+                if (error.code === 'PERMISSION_DENIED') {
+                    writeDetails.innerHTML += `
+                        <div class="error" style="margin-top: 10px; padding: 10px;">
+                            <strong>⚠️ PERMISSION DENIED</strong><br>
+                            Your Firebase Security Rules are blocking writes.<br><br>
+                            <strong>To fix this:</strong><br>
+                            1. Go to <a href="https://console.firebase.google.com/" target="_blank">Firebase Console</a><br>
+                            2. Select your project: "success-quotes-website"<br>
+                            3. Click "Realtime Database" in the left menu<br>
+                            4. Click the "Rules" tab<br>
+                            5. Replace the rules with:<br>
+                            <pre>{
+  "rules": {
+    "entries": {
+      ".read": true,
+      ".write": true
+    },
+    "newsletter-signups": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}</pre>
+                            6. Click "Publish"
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        // Step 5: Test read from database
+        async function testRead() {
+            const readStatus = document.getElementById('readStatus');
+            const readData = document.getElementById('readData');
+            
+            readStatus.className = 'status info';
+            readStatus.textContent = '⏳ Reading from Firebase...';
+            readData.textContent = '';
+            
+            try {
+                const db = firebase.database();
+                const entriesRef = db.ref('entries');
+                
+                const snapshot = await entriesRef.limitToLast(5).once('value');
+                const entries = [];
+                
+                snapshot.forEach((childSnapshot) => {
+                    entries.push({
+                        id: childSnapshot.key,
+                        data: childSnapshot.val()
+                    });
+                });
+                
+                if (entries.length > 0) {
+                    readStatus.className = 'status success';
+                    readStatus.textContent = `✅ Successfully read ${entries.length} entries from Firebase`;
+                    readData.textContent = JSON.stringify(entries, null, 2);
+                } else {
+                    readStatus.className = 'status info';
+                    readStatus.textContent = '✅ Connected, but no entries found in database';
+                    readData.textContent = 'Database is empty. Try the write test above.';
+                }
+                
+                console.log('Read successful! Entries:', entries);
+                
+            } catch (error) {
+                readStatus.className = 'status error';
+                readStatus.textContent = '❌ Read failed: ' + error.message;
+                readData.textContent = error.stack;
+                
+                console.error('Read error:', error);
+            }
+        }
+        
+        // Run checks on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                const firebaseLoaded = checkFirebaseLoading();
+                if (firebaseLoaded) {
+                    const firebaseConfigured = checkFirebaseConfig();
+                    if (firebaseConfigured) {
+                        checkConnection();
+                    }
+                }
+            }, 500);
+        });
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,269 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  quote?: string;
+  author?: string;
+  topic?: string;
+  image?: string;
+  canonicalURL?: string;
+  schemaData?: any;
+}
+
+const { 
+  title, 
+  description, 
+  quote, 
+  author, 
+  topic,
+  image = 'https://www.successquotes.co/Feature1.png',
+  canonicalURL = Astro.url.href,
+  schemaData 
+} = Astro.props;
+
+const siteName = 'Success Quotes';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Primary Meta Tags -->
+  <title>{title}</title>
+  <meta name="title" content={title}>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={canonicalURL}>
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content={canonicalURL}>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content={image}>
+  <meta property="og:site_name" content={siteName}>
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content={canonicalURL}>
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={image}>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/download.svg">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7VXDVZB5V"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q7VXDVZB5V');
+  </script>
+  
+  <!-- Schema.org Structured Data -->
+  {schemaData && (
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+  )}
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/styles.css">
+  
+  <style>
+    /* Quote-specific styles */
+    .quote-container {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 40px 20px;
+    }
+    
+    .quote-text {
+      font-size: 2em;
+      line-height: 1.6;
+      color: white;
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    
+    .quote-author {
+      font-size: 1.3em;
+      color: #888;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .quote-meta {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 30px 0;
+    }
+    
+    .quote-tag {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      color: #ccc;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    
+    .quote-tag:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .quote-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin: 40px 0;
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+      display: inline-block;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .share-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    
+    .share-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    
+    .share-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+    
+    .related-quotes {
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .section-title {
+      font-size: 1.8em;
+      color: white;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="headerTitle"><a href="/" style="text-decoration: none; color: inherit;">Success Quotes</a></div>
+
+    <div class="headerLinksContainer">
+      <div class="headerLinks">
+        <div class="headerLinkApp"><a href="/app">The App</a></div>
+        <div class="headerLinkApp"><a href="/book">The Book</a></div>
+        <div class="headerLinkApp"><a href="/quotes">Search Quotes</a></div>
+        <div class="headerLinkApp"><a href="/daily">Daily Quote</a></div>
+        <div class="headerLinkContact"><a href="mailto:hello@successquotes.co">Contact</a></div>
+      </div>
+    </div>
+
+    <div class="downloadButtonContainer">
+      <a href="https://apps.apple.com/gb/app/success-quotes/id6752120038?itscg=30200&itsct=apps_box_link&mttnsubad=6752120038" class="downloadButtonText">Download iOS App</a>
+    </div>
+    
+    <!-- Hamburger Menu Button (mobile only) -->
+    <button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle menu">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+  </header>
+  
+  <!-- Mobile Navigation Overlay -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay">
+    <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 6L6 18M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="mobile-nav-content">
+      <a href="/app" class="mobile-nav-link">The App</a>
+      <a href="/book" class="mobile-nav-link">The Book</a>
+      <a href="/quotes" class="mobile-nav-link">Search Quotes</a>
+      <a href="/daily" class="mobile-nav-link">Daily Quote</a>
+      <a href="mailto:hello@successquotes.co" class="mobile-nav-link">Contact</a>
+      <a href="https://apps.apple.com/gb/app/success-quotes/id6752120038?itscg=30200&itsct=apps_box_link&mttnsubad=6752120038" class="mobile-nav-download">Download iOS App</a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main>
+    <slot />
+  </main>
+  
+  <!-- Footer -->
+  <footer>
+    <p>Success Quotes is a product of GenInspire</p>
+    <div class="privacy">
+      <a href="/privacy.html" target="_blank">Privacy Policy</a>
+      <a href="/terms.html" target="_blank">Terms</a>
+    </div>
+    <p>hello@successquotes.co</p>
+  </footer>
+  
+  <!-- Scripts -->
+  <script is:inline src="/js/hamburger-menu.js"></script>
+  
+  <!-- Sticky Get App Button -->
+  <div class="sticky-app-button">
+    <a href="https://apps.apple.com/gb/app/success-quotes/id6752120038?itscg=30200&itsct=apps_box_link&mttnsubad=6752120038" class="get-app-button">Get the app now</a>
+  </div>
+</body>
+</html>
+

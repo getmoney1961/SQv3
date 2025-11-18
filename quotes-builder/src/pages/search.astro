@@ -1,0 +1,297 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// SEO
+const title = 'Search Results | Success Quotes';
+const description = 'Search results for success quotes, motivational quotes, and inspirational wisdom from the world\'s most successful people.';
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+>
+  <div class="quote-container" style="max-width: 1000px;">
+    <!-- Search Header -->
+    <div style="text-align: center; margin-bottom: 40px;">
+      <h1 style="font-size: 3em; color: white; margin-bottom: 20px; font-family: 'Instrument Serif', serif;">
+        Search Results
+      </h1>
+      
+      <!-- Search Bar -->
+      <div style="max-width: 600px; margin: 0 auto;">
+        <input 
+          type="text" 
+          id="searchInput"
+          placeholder="Search quotes, authors, or topics..."
+          style="width: 100%; padding: 18px 24px; font-size: 1.1em; border-radius: 12px; border: 2px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.05); color: white; outline: none;"
+        />
+      </div>
+      
+      <div id="searchStats" style="margin-top: 20px; color: #888; font-size: 1.1em;">
+        <!-- Will show "Found X results for 'query'" -->
+      </div>
+    </div>
+    
+    <!-- Loading State -->
+    <div id="loadingState" style="text-align: center; padding: 60px 20px;">
+      <div style="font-size: 3em; margin-bottom: 20px;">🔍</div>
+      <p style="color: #888; font-size: 1.2em;">Searching...</p>
+    </div>
+    
+    <!-- No Results -->
+    <div id="noResults" style="display: none; text-align: center; padding: 60px 20px;">
+      <div style="font-size: 3em; margin-bottom: 20px;">🤔</div>
+      <h2 style="color: white; font-size: 1.8em; margin-bottom: 15px;">No results found</h2>
+      <p style="color: #888; font-size: 1.1em; margin-bottom: 30px;">
+        Try different keywords or browse our collection
+      </p>
+      <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+        <a href="/quotes" class="btn btn-secondary">Browse All Quotes</a>
+        <a href="/random" class="btn btn-primary">Get Random Quote</a>
+      </div>
+    </div>
+    
+    <!-- Results Container -->
+    <div id="resultsContainer" style="display: none;">
+      <!-- Quick Filters -->
+      <div style="margin-bottom: 30px; text-align: center;">
+        <div style="display: inline-flex; gap: 10px; flex-wrap: wrap;">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="quotes">Quotes</button>
+          <button class="filter-btn" data-filter="authors">Authors</button>
+          <button class="filter-btn" data-filter="topics">Topics</button>
+        </div>
+      </div>
+      
+      <!-- Results Grid -->
+      <div id="results" style="display: grid; gap: 25px;">
+        <!-- Results will be inserted here by JavaScript -->
+      </div>
+      
+      <!-- Load More Button -->
+      <div id="loadMoreContainer" style="text-align: center; margin-top: 40px; display: none;">
+        <button id="loadMoreBtn" class="btn btn-secondary">
+          Load More Results
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <style>
+    .filter-btn {
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+      color: #ccc;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.95em;
+    }
+    
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .filter-btn.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-color: transparent;
+      color: white;
+    }
+    
+    .result-card {
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      transition: all 0.3s;
+      border: 1px solid transparent;
+    }
+    
+    .result-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .highlight {
+      background: rgba(255, 193, 7, 0.3);
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+  </style>
+  
+  <script>
+    // Load quotes data
+    let allQuotes = [];
+    let filteredResults = [];
+    let currentFilter = 'all';
+    let displayedCount = 0;
+    const resultsPerPage = 20;
+    
+    // Get query parameter from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('q') || '';
+    
+    // Set search input value
+    document.getElementById('searchInput').value = searchQuery;
+    
+    // Load quotes on page load
+    async function loadQuotes() {
+      try {
+        const response = await fetch('/data/quotes.json');
+        allQuotes = await response.json();
+        
+        if (searchQuery) {
+          performSearch(searchQuery);
+        } else {
+          document.getElementById('loadingState').style.display = 'none';
+          document.getElementById('noResults').style.display = 'block';
+          document.getElementById('searchStats').innerHTML = 'Enter a search term to find quotes';
+        }
+      } catch (error) {
+        console.error('Error loading quotes:', error);
+        document.getElementById('loadingState').innerHTML = '<p style="color: #ff6b6b;">Error loading quotes. Please try again.</p>';
+      }
+    }
+    
+    // Perform search
+    function performSearch(query) {
+      const lowerQuery = query.toLowerCase();
+      
+      filteredResults = allQuotes.filter(quote => {
+        return (
+          quote.quote.toLowerCase().includes(lowerQuery) ||
+          quote.author.toLowerCase().includes(lowerQuery) ||
+          (quote.topic && quote.topic.toLowerCase().includes(lowerQuery)) ||
+          (quote.category && quote.category.toLowerCase().includes(lowerQuery))
+        );
+      });
+      
+      displayResults();
+    }
+    
+    // Display results
+    function displayResults() {
+      const loadingState = document.getElementById('loadingState');
+      const noResults = document.getElementById('noResults');
+      const resultsContainer = document.getElementById('resultsContainer');
+      const searchStats = document.getElementById('searchStats');
+      
+      loadingState.style.display = 'none';
+      
+      if (filteredResults.length === 0) {
+        noResults.style.display = 'block';
+        resultsContainer.style.display = 'none';
+        searchStats.innerHTML = `No results found for "${searchQuery}"`;
+        return;
+      }
+      
+      noResults.style.display = 'none';
+      resultsContainer.style.display = 'block';
+      
+      // Update stats
+      searchStats.innerHTML = `Found <strong style="color: white;">${filteredResults.length}</strong> ${filteredResults.length === 1 ? 'result' : 'results'} for "<strong style="color: white;">${searchQuery}</strong>"`;
+      
+      // Display first batch of results
+      displayedCount = 0;
+      document.getElementById('results').innerHTML = '';
+      loadMoreResults();
+    }
+    
+    // Load more results
+    function loadMoreResults() {
+      const resultsDiv = document.getElementById('results');
+      const loadMoreContainer = document.getElementById('loadMoreContainer');
+      
+      const nextBatch = filteredResults.slice(displayedCount, displayedCount + resultsPerPage);
+      
+      nextBatch.forEach(quote => {
+        const card = createResultCard(quote);
+        resultsDiv.innerHTML += card;
+      });
+      
+      displayedCount += nextBatch.length;
+      
+      // Show/hide load more button
+      if (displayedCount < filteredResults.length) {
+        loadMoreContainer.style.display = 'block';
+      } else {
+        loadMoreContainer.style.display = 'none';
+      }
+    }
+    
+    // Create result card HTML
+    function createResultCard(quote) {
+      const authorSlug = quote.author.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
+      const quoteSlug = quote.quote.split(' ').slice(0, 10).join(' ').toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').substring(0, 60);
+      const quoteURL = `/quote/${authorSlug}/${quoteSlug}`;
+      
+      // Highlight search term in quote text
+      const highlightedQuote = highlightText(quote.quote, searchQuery);
+      
+      return `
+        <article class="result-card">
+          <a href="${quoteURL}" style="text-decoration: none;">
+            <blockquote style="color: white; font-size: 1.2em; line-height: 1.6; font-family: 'Instrument Serif', serif; font-style: italic; margin-bottom: 15px;">
+              "${highlightedQuote}"
+            </blockquote>
+            
+            <p style="color: #888; margin-bottom: 15px;">
+              — ${highlightText(quote.author, searchQuery)}
+            </p>
+            
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              ${quote.topic ? `<span class="quote-tag" style="font-size: 0.85em;">${quote.topic}</span>` : ''}
+              ${quote.category ? `<span class="quote-tag" style="font-size: 0.85em;">${quote.category}</span>` : ''}
+            </div>
+          </a>
+        </article>
+      `;
+    }
+    
+    // Highlight search term in text
+    function highlightText(text, query) {
+      if (!query) return text;
+      
+      const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
+      return text.replace(regex, '<span class="highlight">$1</span>');
+    }
+    
+    // Escape regex special characters
+    function escapeRegex(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+    
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        
+        // For now, show all results (you can add filtering logic later)
+        displayResults();
+      });
+    });
+    
+    // Load more button
+    document.getElementById('loadMoreBtn')?.addEventListener('click', () => {
+      loadMoreResults();
+    });
+    
+    // Search input - new search on Enter
+    document.getElementById('searchInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const newQuery = e.target.value.trim();
+        if (newQuery) {
+          window.location.href = `/search?q=${encodeURIComponent(newQuery)}`;
+        }
+      }
+    });
+    
+    // Initialize
+    loadQuotes();
+  </script>
+</BaseLayout>
+

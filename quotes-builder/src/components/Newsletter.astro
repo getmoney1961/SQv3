@@ -1,0 +1,259 @@
+---
+// Newsletter signup component
+---
+
+<div class="newsletter-section">
+  <div class="newsletter-container">
+    <h2 class="newsletter-title">Get Daily Inspiration 📬</h2>
+    <p class="newsletter-description">
+      Join thousands getting a daily success quote delivered to their inbox every morning
+    </p>
+    
+    <form class="newsletter-form" id="newsletterForm">
+      <div class="form-group">
+        <input 
+          type="email" 
+          id="emailInput"
+          name="email"
+          placeholder="Enter your email address"
+          required
+          class="newsletter-input"
+        />
+        <button type="submit" class="newsletter-button">
+          Subscribe
+        </button>
+      </div>
+      <p class="newsletter-privacy">
+        We respect your privacy. Unsubscribe at any time.
+      </p>
+    </form>
+    
+    <div class="newsletter-success" id="successMessage" style="display: none;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 6L9 17L4 12" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p>Thanks for subscribing! Check your email to confirm.</p>
+    </div>
+    
+    <div class="newsletter-error" id="errorMessage" style="display: none;">
+      <p>Oops! Something went wrong. Please try again.</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .newsletter-section {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    padding: 60px 20px;
+    margin: 40px 0;
+    border-radius: 16px;
+  }
+  
+  .newsletter-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .newsletter-title {
+    font-size: 2em;
+    color: white;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+  
+  .newsletter-description {
+    font-size: 1.1em;
+    color: #ccc;
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+  
+  .newsletter-form {
+    margin-top: 30px;
+  }
+  
+  .form-group {
+    display: flex;
+    gap: 10px;
+    max-width: 500px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+  }
+  
+  .newsletter-input {
+    flex: 1;
+    min-width: 250px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    font-size: 1em;
+    transition: all 0.3s;
+  }
+  
+  .newsletter-input:focus {
+    outline: none;
+    border-color: #667eea;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .newsletter-input::placeholder {
+    color: #888;
+  }
+  
+  .newsletter-button {
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+  
+  .newsletter-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+  }
+  
+  .newsletter-button:active {
+    transform: translateY(0);
+  }
+  
+  .newsletter-privacy {
+    font-size: 0.85em;
+    color: #888;
+    margin-top: 15px;
+  }
+  
+  .newsletter-success {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    background: rgba(74, 222, 128, 0.1);
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+  
+  .newsletter-success p {
+    color: #4ade80;
+    margin: 0;
+    font-weight: 600;
+  }
+  
+  .newsletter-error {
+    padding: 20px;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+  
+  .newsletter-error p {
+    color: #ef4444;
+    margin: 0;
+    font-weight: 600;
+  }
+  
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .newsletter-section {
+      padding: 40px 20px;
+      margin: 20px 10px;
+    }
+    
+    .newsletter-title {
+      font-size: 1.5em;
+    }
+    
+    .newsletter-description {
+      font-size: 1em;
+    }
+    
+    .form-group {
+      flex-direction: column;
+    }
+    
+    .newsletter-input {
+      min-width: 100%;
+    }
+    
+    .newsletter-button {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  // Newsletter form submission handler
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('newsletterForm');
+    const emailInput = document.getElementById('emailInput');
+    const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
+    
+    if (form) {
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const email = emailInput.value.trim();
+        
+        // Basic email validation
+        if (!email || !email.includes('@')) {
+          errorMessage.style.display = 'block';
+          errorMessage.querySelector('p').textContent = 'Please enter a valid email address.';
+          setTimeout(() => {
+            errorMessage.style.display = 'none';
+          }, 3000);
+          return;
+        }
+        
+        // Hide any previous messages
+        successMessage.style.display = 'none';
+        errorMessage.style.display = 'none';
+        
+        // Change button text
+        const button = form.querySelector('.newsletter-button');
+        const originalText = button.textContent;
+        button.textContent = 'Subscribing...';
+        button.disabled = true;
+        
+        try {
+          // TODO: Replace this URL with your actual newsletter service endpoint
+          // For now, we'll store in Firebase or show success
+          
+          // Simulate API call
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          
+          // For now, log to console and show success
+          console.log('Newsletter signup:', email);
+          
+          // Show success message
+          form.style.display = 'none';
+          successMessage.style.display = 'flex';
+          
+          // Optional: Send to Firebase or your backend
+          // You can add Firebase integration here
+          
+        } catch (error) {
+          console.error('Newsletter signup error:', error);
+          errorMessage.style.display = 'block';
+          button.textContent = originalText;
+          button.disabled = false;
+          
+          setTimeout(() => {
+            errorMessage.style.display = 'none';
+          }, 3000);
+        }
+      });
+    }
+  });
+</script>
+
+

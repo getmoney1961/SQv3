@@ -1,0 +1,215 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// SEO
+const title = 'Random Success Quote Generator | Success Quotes';
+const description = 'Get a random inspirational quote from thousands of success quotes by the world\'s most successful people. Discover new wisdom every time you visit.';
+
+// Schema.org structured data
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Random Quote Generator",
+  "description": description,
+  "url": "https://www.successquotes.co/random"
+};
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  schemaData={schemaData}
+>
+  <div class="quote-container">
+    <!-- Header -->
+    <div style="text-align: center; margin-bottom: 40px;">
+      <h1 style="font-size: 3em; color: white; margin-bottom: 20px; font-family: 'Instrument Serif', serif;">
+        Random Quote Generator
+      </h1>
+      <p style="color: #888; font-size: 1.1em;">
+        Discover new inspiration with every click
+      </p>
+    </div>
+    
+    <!-- Quote Display Card -->
+    <div id="quoteCard" style="max-width: 700px; margin: 0 auto; padding: 50px 30px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); min-height: 400px; display: flex; flex-direction: column; justify-content: center;">
+      
+      <!-- Loading State -->
+      <div id="loadingState" style="text-align: center;">
+        <div style="font-size: 3em; margin-bottom: 20px;">🎲</div>
+        <p style="color: #aaa; font-size: 1.2em;">Click the button below to generate a random quote</p>
+      </div>
+      
+      <!-- Quote Content (hidden initially) -->
+      <div id="quoteContent" style="display: none;">
+        <blockquote id="quoteText" class="quote-text" style="font-size: 2em; margin-bottom: 30px;">
+        </blockquote>
+        
+        <p id="quoteAuthor" class="quote-author" style="font-size: 1.3em; margin-bottom: 25px;">
+        </p>
+        
+        <!-- Meta Tags -->
+        <div id="quoteMeta" class="quote-meta">
+        </div>
+        
+        <!-- Share Buttons -->
+        <div class="share-buttons" id="shareButtons" style="margin-top: 25px;">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Generate Button -->
+    <div style="text-align: center; margin-top: 40px;">
+      <button 
+        id="generateBtn"
+        class="btn btn-primary"
+        style="font-size: 1.2em; padding: 18px 40px; cursor: pointer; border: none;"
+      >
+        🎲 Generate Random Quote
+      </button>
+    </div>
+    
+    <!-- Features -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 80px; max-width: 900px; margin-left: auto; margin-right: auto;">
+      <div style="text-align: center; padding: 30px; background: rgba(255, 255, 255, 0.03); border-radius: 12px;">
+        <div style="font-size: 2.5em; margin-bottom: 15px;">📚</div>
+        <h3 style="color: white; margin-bottom: 10px;">Thousands of Quotes</h3>
+        <p style="color: #888; font-size: 0.95em;">Curated from the world's most successful people</p>
+      </div>
+      
+      <div style="text-align: center; padding: 30px; background: rgba(255, 255, 255, 0.03); border-radius: 12px;">
+        <div style="font-size: 2.5em; margin-bottom: 15px;">⚡</div>
+        <h3 style="color: white; margin-bottom: 10px;">Instant Inspiration</h3>
+        <p style="color: #888; font-size: 0.95em;">Get motivated with just one click</p>
+      </div>
+      
+      <div style="text-align: center; padding: 30px; background: rgba(255, 255, 255, 0.03); border-radius: 12px;">
+        <div style="font-size: 2.5em; margin-bottom: 15px;">🔗</div>
+        <h3 style="color: white; margin-bottom: 10px;">Share Easily</h3>
+        <p style="color: #888; font-size: 0.95em;">Share your favorite quotes on social media</p>
+      </div>
+    </div>
+    
+    <!-- More Options -->
+    <div class="quote-actions" style="margin-top: 60px;">
+      <a href="/daily" class="btn btn-secondary">Quote of the Day</a>
+      <a href="/quotes" class="btn btn-secondary">Browse All Quotes</a>
+    </div>
+    
+    <!-- CTA -->
+    <div style="text-align: center; margin-top: 80px; padding: 50px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px;">
+      <h3 style="font-size: 2em; color: white; margin-bottom: 15px;">
+        Love This Quote Generator?
+      </h3>
+      <p style="color: rgba(255, 255, 255, 0.95); font-size: 1.1em; margin-bottom: 30px;">
+        Get thousands more quotes with advanced features in our mobile app
+      </p>
+      <a 
+        href="https://apps.apple.com/gb/app/success-quotes/id6752120038?itscg=30200&itsct=apps_box_link&mttnsubad=6752120038"
+        class="btn btn-primary"
+        style="background: white; color: #667eea; font-size: 1.1em; padding: 16px 32px;"
+      >
+        Download Success Quotes App
+      </a>
+    </div>
+  </div>
+  
+  <script>
+    // Load quotes data
+    let quotesData = [];
+    let currentQuote = null;
+    
+    // Fetch quotes on page load
+    async function loadQuotes() {
+      try {
+        const response = await fetch('/data/quotes.json');
+        quotesData = await response.json();
+      } catch (error) {
+        console.error('Error loading quotes:', error);
+      }
+    }
+    
+    function generateRandomQuote() {
+      if (quotesData.length === 0) {
+        alert('Loading quotes... Please try again in a moment.');
+        return;
+      }
+      
+      // Get random quote
+      const randomIndex = Math.floor(Math.random() * quotesData.length);
+      currentQuote = quotesData[randomIndex];
+      
+      // Hide loading, show quote
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('quoteContent').style.display = 'block';
+      
+      // Update quote text
+      document.getElementById('quoteText').textContent = `"${currentQuote.quote}"`;
+      document.getElementById('quoteAuthor').textContent = `— ${currentQuote.author}`;
+      
+      // Update meta tags
+      const metaHTML = [];
+      if (currentQuote.topic) {
+        const topicSlug = currentQuote.topic.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
+        metaHTML.push(`<a href="/topic/${topicSlug}" class="quote-tag">${currentQuote.topic}</a>`);
+      }
+      if (currentQuote.category) {
+        const categorySlug = currentQuote.category.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
+        metaHTML.push(`<a href="/category/${categorySlug}" class="quote-tag">${currentQuote.category}</a>`);
+      }
+      const authorSlug = currentQuote.author.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '');
+      metaHTML.push(`<a href="/author/${authorSlug}" class="quote-tag">More by ${currentQuote.author}</a>`);
+      
+      document.getElementById('quoteMeta').innerHTML = metaHTML.join('');
+      
+      // Update share buttons
+      const quoteSlug = currentQuote.quote.split(' ').slice(0, 10).join(' ').toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').substring(0, 60);
+      const quoteURL = `https://www.successquotes.co/quote/${authorSlug}/${quoteSlug}`;
+      const encodedURL = encodeURIComponent(quoteURL);
+      const encodedText = encodeURIComponent(`"${currentQuote.quote}" - ${currentQuote.author}`);
+      
+      const shareHTML = `
+        <a href="https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedURL}" target="_blank" rel="noopener noreferrer" class="share-btn" title="Share on Twitter">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+          </svg>
+        </a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodedURL}" target="_blank" rel="noopener noreferrer" class="share-btn" title="Share on Facebook">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+          </svg>
+        </a>
+        <a href="${quoteURL}" class="share-btn" title="View full quote page">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+          </svg>
+        </a>
+      `;
+      
+      document.getElementById('shareButtons').innerHTML = shareHTML;
+      
+      // Update button text
+      document.getElementById('generateBtn').textContent = '🎲 Generate Another Quote';
+      
+      // Add animation
+      const card = document.getElementById('quoteCard');
+      card.style.opacity = '0.5';
+      setTimeout(() => {
+        card.style.opacity = '1';
+      }, 100);
+    }
+    
+    // Load quotes when page loads
+    loadQuotes();
+    
+    // Attach event listener to button
+    document.addEventListener('DOMContentLoaded', function() {
+      const generateBtn = document.getElementById('generateBtn');
+      if (generateBtn) {
+        generateBtn.addEventListener('click', generateRandomQuote);
+      }
+    });
+  </script>
+</BaseLayout>
+
