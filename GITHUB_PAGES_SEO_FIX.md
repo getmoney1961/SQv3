@@ -171,3 +171,4 @@ Once properly configured, GitHub Pages will:
 **Current Status**: CNAME file is correct ✓  
 **Next Step**: Configure Squarespace DNS records with apex domain A records
 
+
