@@ -1,28 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { quotes } from '../scripts/data-loader.js';
-import { getQuoteOfTheDay, formatDate, generatePageTitle, generateMetaDescription } from '../scripts/utils.js';
 
-// Get today's quote
-const todayQuote = getQuoteOfTheDay(quotes);
-const today = new Date();
-const dateString = formatDate(today.toISOString().split('T')[0]);
+// SEO - generic since we'll load the actual quote client-side
+const title = `Quote of the Day | Success Quotes`;
+const description = `Get inspired with today's hand-curated success quote. A fresh, motivational quote delivered every single day to help you stay focused and motivated.`;
 
-// SEO
-const title = `Quote of the Day - ${dateString} | Success Quotes`;
-const description = generateMetaDescription(todayQuote.quote, todayQuote.author, todayQuote.topic);
-
-// Schema.org structured data
+// Schema.org structured data - will be updated client-side
 const schemaData = {
   "@context": "https://schema.org",
-  "@type": "Quotation",
-  "text": todayQuote.quote,
-  "author": {
-    "@type": "Person",
-    "name": todayQuote.author
-  },
-  "about": todayQuote.topic,
-  "datePublished": todayQuote.date,
+  "@type": "WebPage",
+  "name": "Quote of the Day",
+  "description": description,
   "publisher": {
     "@type": "Organization",
     "name": "Success Quotes",
@@ -32,11 +20,6 @@ const schemaData = {
 
 // Social sharing
 const currentURL = 'https://www.successquotes.co/daily';
-const encodedURL = encodeURIComponent(currentURL);
-const encodedText = encodeURIComponent(`Today's Success Quote: "${todayQuote.quote}" - ${todayQuote.author}`);
-const twitterShareURL = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedURL}`;
-const facebookShareURL = `https://www.facebook.com/sharer/sharer.php?u=${encodedURL}`;
-const linkedinShareURL = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedURL}`;
 ---
 
 <BaseLayout 
@@ -50,68 +33,19 @@ const linkedinShareURL = `https://www.linkedin.com/sharing/share-offsite/?url=${
       <div style="color: #888; font-size: 1.1em; text-transform: uppercase; letter-spacing: 2px;">
         Quote of the Day
       </div>
-      <div style="color: #aaa; font-size: 0.95em; margin-top: 10px;">
-        {dateString}
+      <div id="date-string" style="color: #aaa; font-size: 0.95em; margin-top: 10px;">
+        Loading...
       </div>
     </div>
     
     <!-- Main Quote Card -->
-    <div style="max-width: 700px; margin: 0 auto; padding: 50px 30px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
-      <blockquote class="quote-text" style="font-size: 2.2em; margin-bottom: 30px;">
-        "{todayQuote.quote}"
-      </blockquote>
-      
-      <p class="quote-author" style="font-size: 1.4em; margin-bottom: 25px;">
-        — {todayQuote.author}
-      </p>
-      
-      <!-- Meta Tags -->
-      <div class="quote-meta">
-        {todayQuote.topic && (
-          <a href={`/topic/${todayQuote.topicSlug}`} class="quote-tag">
-            {todayQuote.topic}
-          </a>
-        )}
-        {todayQuote.category && (
-          <a href={`/category/${todayQuote.categorySlug}`} class="quote-tag">
-            {todayQuote.category}
-          </a>
-        )}
-        <a href={`/author/${todayQuote.authorSlug}`} class="quote-tag">
-          More by {todayQuote.author}
-        </a>
-      </div>
-      
-      <!-- Share Buttons -->
-      <div class="share-buttons">
-        <a href={twitterShareURL} target="_blank" rel="noopener noreferrer" class="share-btn" title="Share on Twitter">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
-          </svg>
-        </a>
-        <a href={facebookShareURL} target="_blank" rel="noopener noreferrer" class="share-btn" title="Share on Facebook">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
-          </svg>
-        </a>
-        <a href={linkedinShareURL} target="_blank" rel="noopener noreferrer" class="share-btn" title="Share on LinkedIn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
-            <circle cx="4" cy="4" r="2"/>
-          </svg>
-        </a>
-        <button class="share-btn" title="Copy link" onclick="copyToClipboard()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
-            <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
-          </svg>
-        </button>
-      </div>
+    <div id="quote-card" style="max-width: 700px; margin: 0 auto; padding: 50px 30px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); min-height: 300px; display: flex; align-items: center; justify-content: center;">
+      <div style="color: #888; font-size: 1.2em;">Loading today's quote...</div>
     </div>
     
     <!-- Action Buttons -->
     <div class="quote-actions" style="margin-top: 50px;">
-      <a href={`/quote/${todayQuote.authorSlug}/${todayQuote.slug}`} class="btn btn-secondary">View Full Quote Page</a>
+      <a id="view-quote-btn" href="#" class="btn btn-secondary" style="display: none;">View Full Quote Page</a>
       <a href="/random" class="btn btn-primary">Get Random Quote</a>
     </div>
     
@@ -157,6 +91,44 @@ const linkedinShareURL = `https://www.linkedin.com/sharing/share-offsite/?url=${
   </div>
   
   <script>
+    // Utility functions
+    function slugify(text) {
+      return text
+        .toString()
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+        .replace(/^-+/, '')
+        .replace(/-+$/, '');
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+    }
+
+    function getQuoteOfTheDay(quotes, date = new Date()) {
+      // Find quote with matching date
+      const dateString = date.toISOString().split('T')[0]; // YYYY-MM-DD
+      const quote = quotes.find(q => q.date === dateString);
+      
+      if (quote) return quote;
+      
+      // Fallback: use day of year to deterministically pick a quote
+      const start = new Date(date.getFullYear(), 0, 0);
+      const diff = date - start;
+      const oneDay = 1000 * 60 * 60 * 24;
+      const dayOfYear = Math.floor(diff / oneDay);
+      
+      return quotes[dayOfYear % quotes.length];
+    }
+
     function copyToClipboard() {
       const url = window.location.href;
       navigator.clipboard.writeText(url).then(() => {
@@ -165,6 +137,96 @@ const linkedinShareURL = `https://www.linkedin.com/sharing/share-offsite/?url=${
         console.error('Failed to copy:', err);
       });
     }
+
+    // Load and display today's quote
+    async function loadTodaysQuote() {
+      try {
+        const response = await fetch('/data/quotes.json');
+        const quotes = await response.json();
+        
+        const today = new Date();
+        const todayQuote = getQuoteOfTheDay(quotes, today);
+        const dateString = formatDate(today.toISOString().split('T')[0]);
+        
+        // Update date
+        document.getElementById('date-string').textContent = dateString;
+        
+        // Build quote card HTML
+        const currentURL = 'https://www.successquotes.co/daily';
+        const encodedURL = encodeURIComponent(currentURL);
+        const encodedText = encodeURIComponent(`Today's Success Quote: "${todayQuote.quote}" - ${todayQuote.author}`);
+        const twitterShareURL = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedURL}`;
+        const facebookShareURL = `https://www.facebook.com/sharer/sharer.php?u=${encodedURL}`;
+        const linkedinShareURL = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedURL}`;
+        
+        const quoteHTML = `
+          <div style="width: 100%;">
+            <blockquote class="quote-text" style="font-size: 2.2em; margin-bottom: 30px;">
+              "${todayQuote.quote}"
+            </blockquote>
+            
+            <p class="quote-author" style="font-size: 1.4em; margin-bottom: 25px;">
+              — ${todayQuote.author}
+            </p>
+            
+            <!-- Meta Tags -->
+            <div class="quote-meta">
+              ${todayQuote.topic ? `<a href="/topic/${todayQuote.topicSlug}" class="quote-tag">${todayQuote.topic}</a>` : ''}
+              ${todayQuote.category ? `<a href="/category/${todayQuote.categorySlug}" class="quote-tag">${todayQuote.category}</a>` : ''}
+              <a href="/author/${todayQuote.authorSlug}" class="quote-tag">More by ${todayQuote.author}</a>
+            </div>
+            
+            <!-- Share Buttons -->
+            <div class="share-buttons">
+              <a href="${twitterShareURL}" target="_blank" rel="noopener noreferrer" class="share-btn" title="Share on Twitter">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                </svg>
+              </a>
+              <a href="${facebookShareURL}" target="_blank" rel="noopener noreferrer" class="share-btn" title="Share on Facebook">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                </svg>
+              </a>
+              <a href="${linkedinShareURL}" target="_blank" rel="noopener noreferrer" class="share-btn" title="Share on LinkedIn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+                  <circle cx="4" cy="4" r="2"/>
+                </svg>
+              </a>
+              <button class="share-btn" title="Copy link" onclick="copyToClipboard()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        `;
+        
+        // Update quote card
+        const quoteCard = document.getElementById('quote-card');
+        quoteCard.style.display = 'block';
+        quoteCard.style.alignItems = 'flex-start';
+        quoteCard.style.justifyContent = 'flex-start';
+        quoteCard.innerHTML = quoteHTML;
+        
+        // Update "View Full Quote Page" button
+        const viewBtn = document.getElementById('view-quote-btn');
+        viewBtn.href = `/quote/${todayQuote.authorSlug}/${todayQuote.slug}`;
+        viewBtn.style.display = 'inline-block';
+        
+        // Update page title
+        document.title = `Quote of the Day - ${dateString} | Success Quotes`;
+        
+      } catch (error) {
+        console.error('Error loading quote:', error);
+        document.getElementById('quote-card').innerHTML = '<div style="color: #888;">Failed to load today\'s quote. Please refresh the page.</div>';
+      }
+    }
+
+    // Load quote when page loads
+    loadTodaysQuote();
   </script>
 </BaseLayout>
 
