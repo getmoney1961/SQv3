@@ -172,3 +172,5 @@ Once properly configured, GitHub Pages will:
 **Next Step**: Configure Squarespace DNS records with apex domain A records
 
 
+
+

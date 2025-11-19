@@ -9,9 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let index = 0;
     const typingSpeed = 100; // milliseconds per character
     
-    // Firebase database reference
-    const entriesRef = database.ref('entries');
-    
+    // Typing animation function
     function typeCharacter() {
         if (index < text.length) {
             textElement.textContent += text.charAt(index);
@@ -22,6 +20,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Start typing animation after a brief delay
     setTimeout(typeCharacter, 500);
+    
+    // Firebase database reference - only initialize if Firebase is available
+    let entriesRef = null;
+    if (typeof database !== 'undefined') {
+        entriesRef = database.ref('entries');
+    }
     
     // Auto-resize textarea function
     function autoResize() {
@@ -68,6 +72,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Save entry to Firebase
     function saveEntry(text) {
+        if (!entriesRef) {
+            console.warn('Firebase not available - entry not saved');
+            return;
+        }
         const newEntryRef = entriesRef.push();
         newEntryRef.set({
             text: text,
@@ -115,6 +123,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to load all entries and start listening
     function startShowingBubbles(callback) {
+        if (!entriesRef) {
+            console.warn('Firebase not available - cannot show bubbles');
+            if (callback) callback();
+            return;
+        }
+        
         if (firebaseListener) {
             if (callback) callback();
             return; // Already listening
