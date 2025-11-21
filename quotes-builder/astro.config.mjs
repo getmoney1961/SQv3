@@ -6,7 +6,7 @@ export default defineConfig({
   site: 'https://www.successquotes.co',
   outDir: '../docs',
   build: {
-    format: 'file'
+    format: 'directory'
   },
   integrations: [
     sitemap({
